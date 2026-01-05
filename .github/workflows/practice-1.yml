@@ -41,5 +41,5 @@ jobs:
           file: ./mlops-practice-1/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+            ghcr.io/jordenfu/mlops-practice:practice-1-latest
+            ghcr.io/jordenfu/mlops-practice:practice-1-sha-${{ github.sha }}
