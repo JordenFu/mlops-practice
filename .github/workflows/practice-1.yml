@@ -22,7 +22,8 @@ jobs:
 
       - name: Download ONNX model from Hugging Face
         run: |
-          curl -L -o roberta-sequence-classification-9.onnx \
+          mkdir -p mlops-practice-1
+          curl -L -o mlops-practice-1/roberta-sequence-classification-9.onnx \
             https://huggingface.co/onnxmodelzoo/roberta-sequence-classification-9/resolve/main/roberta-sequence-classification-9.onnx
           ls -lh mlops-practice-1/roberta-sequence-classification-9.onnx
 
