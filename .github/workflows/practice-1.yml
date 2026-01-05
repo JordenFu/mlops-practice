@@ -1,0 +1,44 @@
+name: CD practice 1 - Build and push roberta-sequence-classification container to GHCR
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "mlops-practice-1/**"
+      - ".github/workflows/practice-1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download ONNX model from Hugging Face
+        run: |
+          curl -L -o roberta-sequence-classification-9.onnx \
+            https://huggingface.co/onnxmodelzoo/roberta-sequence-classification-9/resolve/main/roberta-sequence-classification-9.onnx
+          ls -lh mlops-practice-1/roberta-sequence-classification-9.onnx
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./mlops-practice-1
+          file: ./mlops-practice-1/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
